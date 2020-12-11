@@ -1,6 +1,5 @@
 package com.playgrounds.models;
 
-import com.playgrounds.enumeration.Options;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
