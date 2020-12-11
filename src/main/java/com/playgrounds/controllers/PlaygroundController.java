@@ -1,5 +1,6 @@
 package com.playgrounds.controllers;
 
+import com.playgrounds.dto.HtmlDto;
 import com.playgrounds.dto.XmlDto;
 import com.playgrounds.html.HtmlParsing;
 import com.playgrounds.xml.XmlParsing;
@@ -30,8 +31,7 @@ public class PlaygroundController {
     }
 
     @GetMapping("/html")
-    public String parseHtml() throws IOException {
-        htmlParsing.htmlParse();
-        return "";
+    public List<HtmlDto> parseHtml() throws IOException {
+        return htmlParsing.htmlParse();
     }
 }
