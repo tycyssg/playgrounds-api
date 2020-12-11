@@ -1,0 +1,21 @@
+jwt:
+  secret: '[a-zA-Z0-9._]^+$Guidelines89797987forAlphabeticalArraNumeralsandOtherSymbo$'
+
+server:
+  port: 8082
+  #  error:
+  #    whitelabel:
+  #      enabled: false
+
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/playgrounds?useUnicode=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false #change this to your database url
+    password: password
+    username: postgres
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
