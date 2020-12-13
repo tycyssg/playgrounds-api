@@ -1,6 +1,7 @@
 package com.playgrounds.xml;
 
 import com.playgrounds.dto.XmlDto;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@NoArgsConstructor
 public class XmlParsing {
 
     public List<XmlDto> parse() {

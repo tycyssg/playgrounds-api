@@ -3,6 +3,7 @@ package com.playgrounds.html;
 import com.playgrounds.dto.HtmlAddress;
 import com.playgrounds.dto.HtmlDto;
 import com.playgrounds.dto.HtmlOpeningHours;
+import lombok.NoArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,27 +16,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@NoArgsConstructor
 public class HtmlParsing {
 
     public List<HtmlDto> htmlParse() throws IOException {
-
         return getAllParksUrl().stream().map(this::getDetailsOfSpecificPark).collect(Collectors.toList());
-//        List<HtmlDto> dto = new ArrayList<>();
-//        int x = 1;
-//        for (String url : getAllParksUrl()){
-//            System.out.println(x++ + url);
-//            dto.add(getDetailsOfSpecificPark(url));
-//        }
-//
-//        return dto;
     }
 
     private List<String> getAllParksUrl() throws IOException {
         int LAST_PAGE_VALUE = 4;
+        String URL = "https://www.dublincity.ie/residential/parks/dublin-city-parks/visit-park?keys=&amp%3Bfacilities=All&amp%3Bpage=4&facilities=All&page=";
         List<String> parkUrls = new ArrayList<>();
 
         for (int i = 0; i < LAST_PAGE_VALUE; i++) {
-            Document doc = Jsoup.connect("https://www.dublincity.ie/residential/parks/dublin-city-parks/visit-park?keys=&amp%3Bfacilities=All&amp%3Bpage=4&facilities=All&page=" + i)
+            Document doc = Jsoup.connect(URL + i)
                     .data("query", "Java")
                     .userAgent("Mozilla")
                     .cookie("auth", "token")
