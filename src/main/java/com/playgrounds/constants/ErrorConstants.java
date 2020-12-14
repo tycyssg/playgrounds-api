@@ -10,7 +10,11 @@ public class ErrorConstants {
     public static final String ACCOUNT_LOCKED = "Your account has been locked. Please contact administration";
     public static final String NOT_ENOUGH_PERMISSION = "You do not have enough permission";
     public static final String UNEXPECTED_VALUE = "Unexpected error";
-    public static final String SERVER_COULD_NOT_BE_REACH = "The service could not be reach!";
-    public static final String PASSWORD_SAME_AS_OLD_ONE = "The password cannot be the same as the old one!";
+    public static final String PARKS_DATA_NOT_FOUND = "There is no parks data to display!";
+    public static final String PARK_NOT_FOUND_ID = "No park found with this id!";
+    public static final String PARK_NOT_FOUND_NAME = "No park found with this name!";
+    public static final String COUNTY_DATA_NOT_FOUND = "No county found with this name!";
+    public static final String COUNTY_DATA_NOT_FOUND_ID = "No county found with this id!";
+    public static final String COUNTIES_DATA_NOT_FOUND = "There is no county data to display!";
 
 }

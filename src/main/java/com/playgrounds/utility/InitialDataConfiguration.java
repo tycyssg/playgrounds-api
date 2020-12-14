@@ -1,6 +1,9 @@
 package com.playgrounds.utility;
 
 
+import com.playgrounds.dto.HtmlAddress;
+import com.playgrounds.dto.HtmlDto;
+import com.playgrounds.dto.HtmlOpeningHours;
 import com.playgrounds.dto.XmlDto;
 import com.playgrounds.enumeration.Options;
 import com.playgrounds.html.HtmlParsing;
@@ -15,9 +18,11 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Configuration
@@ -37,13 +42,71 @@ public class InitialDataConfiguration {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void saveParsedDataIntoDb() {
+    public void saveParsedDataIntoDb() throws IOException {
         log.info("XML Parsing Data Starting.");
         List<XmlDto> xmlData = xmlParsing.parse();
         log.info("Saving XML Data in DB Starting.");
-        saveXmlData(xmlData);
+        // saveXmlData(xmlData);
+        log.info("Html Parsing Data Starting.");
+        List<HtmlDto> htmlData = htmlParsing.htmlParse();
+        log.info("Saving Hml Data in DB Starting.");
+        //saveHtmlData(htmlData);
     }
 
+    private void saveHtmlData(List<HtmlDto> htmlData) {
+        if (htmlData.isEmpty()) {
+            log.error("Hml Data could not be extracted");
+            return;
+        }
+
+        String COUNTY_NAME = "Dublin City Council ";
+        County county = new County();
+        county.setCounty(COUNTY_NAME);
+        List<Park> parksToSave = new ArrayList<>();
+
+        for (HtmlDto data : htmlData) {
+            Park parkToSave = new Park();
+            parkToSave.setName(data.getTitle());
+            parkToSave.setDescription(data.getDescription());
+            parkToSave.setPhone(data.getPhone());
+            parkToSave.setEmail(data.getEmail());
+            parkToSave.setAccessibility(data.getAccessibility());
+            parkToSave.setParkOpeningHours(parseHtmlOpenHoursToOpenHours(data.getOpeningHours()));
+            parkToSave.setParkFacilities(getParkFacility(data.getFacilities()));
+            parkToSave.setParkAddress(parseHtmlAddressToParkAddress(data.getAddress()));
+            parksToSave.add(parkToSave);
+        }
+
+        county.setParks(parksToSave);
+        try {
+            countyRepository.save(county);
+            log.info("Html Data has been successfully saved!");
+        } catch (Exception e) {
+            log.error("Html Data has not been saved");
+        }
+
+    }
+
+    private ParkAddress parseHtmlAddressToParkAddress(HtmlAddress htmlAddress) {
+        return new ParkAddress(
+                null,
+                htmlAddress.getAddress1() + " " +
+                        htmlAddress.getAddress2() + " " +
+                        htmlAddress.getDependentLocality() + " " +
+                        htmlAddress.getLocality() + " " +
+                        htmlAddress.getAdministrativeArea() + " " +
+                        htmlAddress.getCountry(),
+                htmlAddress.getPostalCode()
+        );
+    }
+
+    private List<ParkFacility> getParkFacility(List<String> facilities) {
+        return facilities.stream().map(f -> new ParkFacility(f, "Park", Options.NO, Options.NO)).collect(Collectors.toList());
+    }
+
+    private List<ParkOpeningHours> parseHtmlOpenHoursToOpenHours(List<HtmlOpeningHours> htmlOpeningHours) {
+        return htmlOpeningHours.stream().map(hoh -> new ParkOpeningHours(null, null, null, hoh.getDay(), hoh.getTime())).collect(Collectors.toList());
+    }
 
     private void saveXmlData(List<XmlDto> xmlData) {
         String COUNTY_NAME = "Fingal County Council";
@@ -82,7 +145,6 @@ public class InitialDataConfiguration {
         }
 
     }
-
 
     private List<ParkFacility> getParkFacility(XmlDto data) {
         ParkFacility parkFacility = new ParkFacility();

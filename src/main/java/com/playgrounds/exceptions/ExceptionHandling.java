@@ -1,8 +1,7 @@
 package com.playgrounds.exceptions;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.playgrounds.exceptions.models.InvalidCredentialsException;
-import com.playgrounds.exceptions.models.InvalidDataFormatException;
+import com.playgrounds.exceptions.models.*;
 import com.playgrounds.models.HttpCustomResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -23,6 +22,25 @@ import static org.springframework.http.HttpStatus.*;
 @RestControllerAdvice
 public class ExceptionHandling {
 
+    @ExceptionHandler(CountiesNotFoundException.class)
+    public ResponseEntity<HttpCustomResponse> countiesNotFoundException() {
+        return createHttpResponse(NOT_FOUND, COUNTIES_DATA_NOT_FOUND);
+    }
+
+    @ExceptionHandler(CountyNotFoundException.class)
+    public ResponseEntity<HttpCustomResponse> countyNotFoundException() {
+        return createHttpResponse(NOT_FOUND, COUNTY_DATA_NOT_FOUND);
+    }
+
+    @ExceptionHandler(ParkNotFoundException.class)
+    public ResponseEntity<HttpCustomResponse> parkNotFoundException(ParkNotFoundException e) {
+        return createHttpResponse(NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(ParksDataNotFoundException.class)
+    public ResponseEntity<HttpCustomResponse> parksDataNotFoundException() {
+        return createHttpResponse(NOT_FOUND, PARKS_DATA_NOT_FOUND);
+    }
 
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<HttpCustomResponse> illegalStateException() {
@@ -79,4 +97,5 @@ public class ExceptionHandling {
 
         return new ResponseEntity<>(httpCustomResponse, httpStatus);
     }
+
 }

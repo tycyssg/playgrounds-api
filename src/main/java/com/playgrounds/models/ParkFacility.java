@@ -29,4 +29,11 @@ public class ParkFacility {
     @Column(name = "toilets")
     @Enumerated(EnumType.STRING)
     private Options toilets;
+
+    public ParkFacility(String facility, String type, Options drinkingWater, Options toilets) {
+        this.facility = facility;
+        this.type = type;
+        this.drinkingWater = drinkingWater;
+        this.toilets = toilets;
+    }
 }

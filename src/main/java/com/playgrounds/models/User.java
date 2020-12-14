@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Data
@@ -24,8 +25,10 @@ public class User {
     private String[] authorities;
     private Boolean isActive;
     private Boolean isLocked;
+    private Date joinDate;
     @Transient
     private Long expiresIn;
     @Transient
     private String token;
+
 }
