@@ -44,8 +44,6 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findUserByEmail(username);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         return new UserPrincipal(user);
     }
 

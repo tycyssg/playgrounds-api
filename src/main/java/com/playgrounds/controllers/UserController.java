@@ -14,8 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.zip.DataFormatException;
+
+import static com.playgrounds.constants.ErrorConstants.INVALID_DATA_FORMAT;
 import static com.playgrounds.constants.SecurityConstants.EXPIRATION_TIME;
 
 
@@ -37,7 +42,9 @@ public class UserController extends ExceptionHandling {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<User> register(@RequestBody User user) throws UsernameExistException, EmailExistException {
+    public ResponseEntity<User> register(@Valid @RequestBody User user, BindingResult bindingResult) throws UsernameExistException, EmailExistException, DataFormatException {
+
+        if (bindingResult.hasErrors()) throw new DataFormatException(INVALID_DATA_FORMAT);
 
         return ResponseEntity.ok(userService.register(user));
     }
@@ -45,7 +52,6 @@ public class UserController extends ExceptionHandling {
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity<User> login(@RequestBody User user) {
-
         authenticate(user.getEmail(), user.getPassword());
         User loggedUser = userService.findUserByEmail(user.getEmail());
         UserPrincipal userPrincipal = new UserPrincipal(loggedUser);

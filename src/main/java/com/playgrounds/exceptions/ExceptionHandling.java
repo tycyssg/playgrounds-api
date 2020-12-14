@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -73,10 +74,9 @@ public class ExceptionHandling {
         return createHttpResponse(BAD_REQUEST, INVALID_DATA_FORMAT);
     }
 
-
-    @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<HttpCustomResponse> invalidCredentials() {
-        return createHttpResponse(UNAUTHORIZED, INVALID_CREDENTIALS);
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<HttpCustomResponse> badCredentialsException() {
+        return createHttpResponse(BAD_REQUEST, INVALID_CREDENTIALS);
     }
 
 
