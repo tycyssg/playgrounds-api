@@ -76,9 +76,16 @@ public class PlaygroundServiceImplementation implements PlaygroundService {
     }
 
     @Override
-    public void deleteCounty(Long countyId) throws ParkNotFoundException {
-        if (!countyRepository.existsById(countyId)) throw new ParkNotFoundException(COUNTY_DATA_NOT_FOUND_ID);
+    public void deleteCounty(Long countyId) throws CountyNotFoundException {
+        if (!countyRepository.existsById(countyId)) throw new CountyNotFoundException(COUNTY_DATA_NOT_FOUND_ID);
 
         countyRepository.deleteById(countyId);
+    }
+
+    @Override
+    public void updateCountyName(Long countyId, String countyName) throws CountyNotFoundException {
+        if (!countyRepository.existsById(countyId)) throw new CountyNotFoundException(COUNTY_DATA_NOT_FOUND_ID);
+
+        countyRepository.updateCountyName(countyId, countyName);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface PlaygroundService {
 
-    public List<County> getCountiesWithParks() throws CountyNotFoundException, CountiesNotFoundException;
+    public List<County> getCountiesWithParks() throws CountiesNotFoundException;
 
     public County getSpecificCounty(String countyName) throws CountyNotFoundException;
 
@@ -24,6 +24,7 @@ public interface PlaygroundService {
 
     public void deletePark(Long parkId) throws ParkNotFoundException;
 
-    public void deleteCounty(Long countyId) throws ParkNotFoundException;
+    public void deleteCounty(Long countyId) throws CountyNotFoundException;
 
+    public void updateCountyName(Long countyId, String countyName) throws CountyNotFoundException;
 }
