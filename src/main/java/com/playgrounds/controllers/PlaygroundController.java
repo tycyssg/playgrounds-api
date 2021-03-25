@@ -26,7 +26,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api")
-public class PlaygroundController {
+public class PlaygroundController extends ExceptionHandling{
 
     private static final String PARK_DELETED_SUCCESSFULLY = "Park deleted successfully";
     private static final String COUNTY_DELETED_SUCCESSFULLY = "County deleted successfully";
